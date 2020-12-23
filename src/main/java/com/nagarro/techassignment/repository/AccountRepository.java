@@ -8,6 +8,7 @@ import com.nagarro.techassignment.entity.Account;
 @Repository
 public interface AccountRepository 
         extends JpaRepository<Account, Long> {
+
  
 }
 

@@ -1,10 +1,15 @@
 package com.nagarro.techassignment.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.nagarro.techassignment.converter.DateAttributeConverter;
 
 @Entity
 @Table(name="Statement")
@@ -16,12 +21,17 @@ public class Statement {
 	    private Long id;
 	     
 	    @Column(name="account_id")
-	    private String accountId;
+	    private Long accountId;
 	     
 	    @Column(name="datefield")
-	    private String dateField;
+	    @Convert(converter = DateAttributeConverter.class)
+	    private Date dateField;
 	    
-	    @Column(name="amount")
+	    public void setDateField(Date dateField) {
+			this.dateField = dateField;
+		}
+
+		@Column(name="amount")
 	    private String amount;
 
 		public Long getId() {
@@ -32,20 +42,12 @@ public class Statement {
 			this.id = id;
 		}
 
-		public String getAccountId() {
+		public Long getAccountId() {
 			return accountId;
 		}
 
-		public void setAccountId(String accountId) {
+		public void setAccountId(Long accountId) {
 			this.accountId = accountId;
-		}
-
-		public String getDateField() {
-			return dateField;
-		}
-
-		public void setDateField(String dateField) {
-			this.dateField = dateField;
 		}
 
 		public String getAmount() {
