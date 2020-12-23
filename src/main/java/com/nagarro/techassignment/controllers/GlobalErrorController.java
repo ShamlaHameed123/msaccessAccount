@@ -34,8 +34,8 @@ public class GlobalErrorController  implements ErrorController {
                  
             }
         }
+		return errorPage;
          
-        return errorPage;
     }
      
     @Override

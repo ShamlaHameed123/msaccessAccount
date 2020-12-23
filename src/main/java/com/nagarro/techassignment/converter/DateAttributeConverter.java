@@ -12,7 +12,7 @@ import javax.persistence.Converter;
 @Converter
 public class DateAttributeConverter implements AttributeConverter<Date, String> {
 
-    private final String DATE_FORMAT = "DD.MM.YYYY";
+    private final String DATE_FORMAT = "dd.MM.yyyy";
 
     @Override
     public String convertToDatabaseColumn(Date date) {

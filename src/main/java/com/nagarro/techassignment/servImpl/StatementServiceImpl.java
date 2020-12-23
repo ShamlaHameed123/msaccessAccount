@@ -1,5 +1,7 @@
 package com.nagarro.techassignment.servImpl;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,19 +31,30 @@ public class StatementServiceImpl implements StatementService{
 	
 
 	@Override
-	public List<StatementDto> getFilteredStatement(long accountID, RequestDTO dateRange, float fromAmount,
-			float toAmount) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Statement> getAdvancedFilteredStatement(long accountID, Date fromDate, Date toDate, double fromAmount,
+			double toAmount) {
+		
+		return statementRepository.getAdvancedFilteredStatementWithDateAndAmount(accountID, fromDate, toDate, fromAmount, toAmount);
+	}
+	
+	@Override
+	public List<Statement> getFilterByDateStatement(long accountID, Date fromDate, Date toDate) {
+		
+		return statementRepository.getStatementWithDateRange(accountID, fromDate, toDate);
+	}
+	
+	@Override
+	public List<Statement> getFilterByAmountStatement(long accountID,double fromAmount, double toAmount) {
+		
+		return statementRepository.getStatementWithAmountRange(accountID, fromAmount, toAmount);
 	}
 
-
 	@Override
-	public List<Statement> getThreeMonthBackStatement(Long accountID, Date currentDate) throws ParseException {
-//		Optional<Account> account = accountRepository.findById(accountID);
-//		Date fromDate=new SimpleDateFormat("dd.MM.yyyy").parse(currentDate);  
-		Date toDate = DateUtils.addMonths(currentDate, 4);
-		List<Statement> statements = statementRepository.findThreeMonthBackStatement(accountID, currentDate, toDate);
+	public List<Statement> getThreeMonthBackStatement(Long accountID) throws ParseException {
+//		Date currentDate=new SimpleDateFormat("dd.MM.yyyy").parse("09.08.2012"); //sample date given since
+		Date currentDate = new Date();
+		Date toDate = DateUtils.addMonths(currentDate, -3);
+		List<Statement> statements = statementRepository.getStatementWithDateRange(accountID, currentDate, toDate);
 		return statements;
 	}
 

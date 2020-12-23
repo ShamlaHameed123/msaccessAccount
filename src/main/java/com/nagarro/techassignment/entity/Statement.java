@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.nagarro.techassignment.converter.AmountStringAttributeConverter;
 import com.nagarro.techassignment.converter.DateAttributeConverter;
 
 @Entity
@@ -23,16 +24,27 @@ public class Statement {
 	    @Column(name="account_id")
 	    private Long accountId;
 	     
-	    @Column(name="datefield")
+
+		@Column(name="datefield")
 	    @Convert(converter = DateAttributeConverter.class)
 	    private Date dateField;
 	    
-	    public void setDateField(Date dateField) {
-			this.dateField = dateField;
+		@Column(name="amount")
+		@Convert(converter = AmountStringAttributeConverter.class)
+	    private double amount;
+		
+		public void setDateField(Date dateField) {
+				this.dateField = dateField;
+		}
+		
+		public double getAmount() {
+			return amount;
 		}
 
-		@Column(name="amount")
-	    private String amount;
+		
+	   public void setAmount(double amount) {
+			this.amount = amount;
+		}
 
 		public Long getId() {
 			return id;
@@ -50,11 +62,9 @@ public class Statement {
 			this.accountId = accountId;
 		}
 
-		public String getAmount() {
-			return amount;
+		public Date getDateField() {
+			return dateField;
 		}
 
-		public void setAmount(String amount) {
-			this.amount = amount;
-		}
+
 }

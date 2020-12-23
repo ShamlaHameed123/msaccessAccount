@@ -15,8 +15,18 @@ public interface StatementRepository
         extends JpaRepository<Statement, Long> {
 	
 	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND (s.dateField BETWEEN :fromDate AND :toDate)")
-	public List<Statement> findThreeMonthBackStatement(@Param("accountId") Long accountId, @Param("fromDate") Date currentDate, @Param("toDate") Date toDate);
-//	List<Statement> findFilteredStatementByDateAndAmount(long accountID, Date fromDate, 
-//											Date toDate, float fromAmount, float toAmount);
+	public List<Statement> getStatementWithDateRange(@Param("accountId") Long accountId, @Param("fromDate") Date currentDate, @Param("toDate") Date toDate);
+	
+	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND ((s.dateField BETWEEN :fromDate AND :toDate) AND (s.amount BETWEEN :fromAmount AND :toAmount))")
+	public List<Statement> getAdvancedFilteredStatementWithDateAndAmount(@Param("accountId") Long accountId, 
+														@Param("fromDate") Date currentDate, 
+															@Param("toDate") Date toDate,
+															@Param("fromAmount") double fromAmount, 
+															@Param("toAmount") double toAmount);
+	
+	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND (s.amount BETWEEN :fromAmount AND :toAmount)")
+	public List<Statement> getStatementWithAmountRange(@Param("accountId") Long accountId,
+			@Param("fromAmount") double fromAmount, 
+			@Param("toAmount") double toAmount);
  
 }
