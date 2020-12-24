@@ -5,5 +5,5 @@
 3. Build and Run the Application.
 
 # Security Configuration
-1. Users and Admin can access only accounts/{accountID}
+1. Users and Admin can access accounts/{accountID}
 2. Admin members only can access advanced filtering with query parameters check accounts/{accountID}/filter, add query parameters for date range and amount range(optional, leave blank).
