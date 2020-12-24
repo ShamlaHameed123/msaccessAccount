@@ -54,9 +54,8 @@ public class StatementServiceImpl implements StatementService{
 	@Override
 	public List<Statement> getThreeMonthBackStatement(Long accountID) throws ParseException {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-//		LocalDate currentDate=LocalDate.parse("09.03.2012", formatter); //sample date given since
 		LocalDate currentDate = LocalDate.now();
-		LocalDate fromDate = currentDate.minusMonths(8);
+		LocalDate fromDate = currentDate.minusMonths(3);
 		List<Statement> statements = statementRepository.getStatementWithGivenDateRange(accountID, fromDate, currentDate);
 		return statements;
 	}
