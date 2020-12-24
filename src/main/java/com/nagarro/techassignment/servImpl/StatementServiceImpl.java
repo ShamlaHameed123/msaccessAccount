@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,16 +33,16 @@ public class StatementServiceImpl implements StatementService{
 	
 
 	@Override
-	public List<Statement> getAdvancedFilteredStatement(long accountID, Date fromDate, Date toDate, double fromAmount,
+	public List<Statement> getAdvancedFilteredStatement(long accountID, LocalDate fromDate, LocalDate toDate, double fromAmount,
 			double toAmount) {
 		
 		return statementRepository.getAdvancedFilteredStatementWithDateAndAmount(accountID, fromDate, toDate, fromAmount, toAmount);
 	}
 	
 	@Override
-	public List<Statement> getFilterByDateStatement(long accountID, Date fromDate, Date toDate) {
+	public List<Statement> getFilterByDateStatement(long accountID, LocalDate fromDate, LocalDate toDate) {
 		
-		return statementRepository.getStatementWithDateRange(accountID, fromDate, toDate);
+		return statementRepository.getStatementWithGivenDateRange(accountID, fromDate, toDate);
 	}
 	
 	@Override
@@ -51,10 +53,11 @@ public class StatementServiceImpl implements StatementService{
 
 	@Override
 	public List<Statement> getThreeMonthBackStatement(Long accountID) throws ParseException {
-//		Date currentDate=new SimpleDateFormat("dd.MM.yyyy").parse("09.08.2012"); //sample date given since
-		Date currentDate = new Date();
-		Date toDate = DateUtils.addMonths(currentDate, -3);
-		List<Statement> statements = statementRepository.getStatementWithDateRange(accountID, currentDate, toDate);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+//		LocalDate currentDate=LocalDate.parse("09.03.2012", formatter); //sample date given since
+		LocalDate currentDate = LocalDate.now();
+		LocalDate fromDate = currentDate.minusMonths(8);
+		List<Statement> statements = statementRepository.getStatementWithGivenDateRange(accountID, fromDate, currentDate);
 		return statements;
 	}
 

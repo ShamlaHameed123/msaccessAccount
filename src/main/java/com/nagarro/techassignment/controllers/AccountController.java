@@ -3,6 +3,8 @@ package com.nagarro.techassignment.controllers;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +49,7 @@ public class AccountController {
     {
 		try {
 			return new ResponseEntity<>(statementService.getThreeMonthBackStatement(accountId), HttpStatus.OK);
+//			return new ResponseEntity<>(statementRepository.findAll(), HttpStatus.OK);
 		} catch (RecordNotFoundException rne) {
 			throw new RecordNotFoundException("Record not found");
 		}
@@ -71,8 +74,9 @@ public class AccountController {
 //    	String Amount2="30000";
     	try {
     		if ((!Date1.isEmpty() && !Date2.isEmpty()) && (Date1!=null && Date2!=null)) {
-    			Date fromDate=new SimpleDateFormat("dd.MM.yyyy").parse(Date1);
-    			Date toDate=new SimpleDateFormat("dd.MM.yyyy").parse(Date2);
+    			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    			LocalDate fromDate=LocalDate.parse(Date1, formatter);
+    			LocalDate toDate=LocalDate.parse(Date2, formatter);
     			if(!Amount1.isEmpty() && !Amount2.isEmpty() && (Amount1 != null && Amount2 != null)) {
     				float fromAmount = Float.parseFloat(Amount1);
     				float toAmount = Float.parseFloat(Amount2);

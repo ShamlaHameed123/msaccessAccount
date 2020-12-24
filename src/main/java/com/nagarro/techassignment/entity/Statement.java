@@ -1,5 +1,6 @@
 package com.nagarro.techassignment.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nagarro.techassignment.converter.AmountStringAttributeConverter;
 import com.nagarro.techassignment.converter.DateAttributeConverter;
 
@@ -27,16 +31,19 @@ public class Statement {
 
 		@Column(name="datefield")
 	    @Convert(converter = DateAttributeConverter.class)
-	    private Date dateField;
+		@DateTimeFormat(pattern = "dd.MM.yyyy")
+		@JsonFormat(pattern="dd.MM.yyyy", timezone="UTC")
+	    private LocalDate dateField;
 	    
+		public void setDateField(LocalDate dateField) {
+			this.dateField = dateField;
+		}
+
 		@Column(name="amount")
 		@Convert(converter = AmountStringAttributeConverter.class)
 	    private double amount;
 		
-		public void setDateField(Date dateField) {
-				this.dateField = dateField;
-		}
-		
+
 		public double getAmount() {
 			return amount;
 		}
@@ -62,9 +69,11 @@ public class Statement {
 			this.accountId = accountId;
 		}
 
-		public Date getDateField() {
+
+		public LocalDate getDateField() {
 			return dateField;
 		}
+
 
 
 }

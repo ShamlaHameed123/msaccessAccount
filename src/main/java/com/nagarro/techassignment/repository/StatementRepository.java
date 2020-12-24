@@ -1,6 +1,6 @@
 package com.nagarro.techassignment.repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,17 +14,17 @@ import com.nagarro.techassignment.entity.Statement;
 public interface StatementRepository 
         extends JpaRepository<Statement, Long> {
 	
-	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND (s.dateField BETWEEN :fromDate AND :toDate)")
-	public List<Statement> getStatementWithDateRange(@Param("accountId") Long accountId, @Param("fromDate") Date currentDate, @Param("toDate") Date toDate);
+	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND (s.dateField > :fromDate OR s.dateField < :toDate)")
+	public List<Statement> getStatementWithGivenDateRange(@Param("accountId") Long accountId, @Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
 	
-	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND ((s.dateField BETWEEN :fromDate AND :toDate) AND (s.amount BETWEEN :fromAmount AND :toAmount))")
+	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND ((s.dateField > :fromDate OR s.dateField < :toDate) AND (s.amount > :fromAmount OR s.amount < :toAmount))")
 	public List<Statement> getAdvancedFilteredStatementWithDateAndAmount(@Param("accountId") Long accountId, 
-														@Param("fromDate") Date currentDate, 
-															@Param("toDate") Date toDate,
+														@Param("fromDate") LocalDate fromDate, 
+															@Param("toDate") LocalDate toDate,
 															@Param("fromAmount") double fromAmount, 
 															@Param("toAmount") double toAmount);
 	
-	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND (s.amount BETWEEN :fromAmount AND :toAmount)")
+	@Query("SELECT s FROM Statement s WHERE s.accountId=:accountId AND (s.amount > :fromAmount OR s.amount < :toAmount)")
 	public List<Statement> getStatementWithAmountRange(@Param("accountId") Long accountId,
 			@Param("fromAmount") double fromAmount, 
 			@Param("toAmount") double toAmount);

@@ -1,8 +1,8 @@
 package com.nagarro.techassignment.converter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -10,21 +10,23 @@ import javax.persistence.Converter;
 
 
 @Converter
-public class DateAttributeConverter implements AttributeConverter<Date, String> {
+public class DateAttributeConverter implements AttributeConverter<LocalDate, String> {
 
     private final String DATE_FORMAT = "dd.MM.yyyy";
 
     @Override
-    public String convertToDatabaseColumn(Date date) {
-        return new SimpleDateFormat(DATE_FORMAT).format(date);
+    public String convertToDatabaseColumn(LocalDate date) {
+    	String stringDate = date.format(DateTimeFormatter.ofPattern(DATE_FORMAT));
+        return stringDate;
     }
 
     @Override
-    public Date convertToEntityAttribute(String dateString) {
-        Date converted = null;
+    public LocalDate convertToEntityAttribute(String dateString) {
+        LocalDate converted = null;
         try {
-            converted = new SimpleDateFormat(DATE_FORMAT).parse(dateString);
-        } catch (ParseException ex) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        	converted = LocalDate.parse(dateString, formatter);
+        } catch (DateTimeParseException ex) {
         	
         }
         return converted;
